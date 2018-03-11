@@ -14,14 +14,14 @@ export default function main(blobPath: string) {
 
   return function(ctx: Context, next: Function) {
 
-    switch(ctx.method) {
+    switch (ctx.method) {
       case 'GET' :
         return get(ctx, blobPath);
       default :
         throw new MethodNotAllowed('Method not allowed: ' + ctx.method);
     }
 
-  }
+  };
 
 }
 
@@ -64,22 +64,22 @@ async function getDirectory(ctx: Context, localPath: string) {
 
   };
 
-  for(const file of await readdir(localPath)) {
+  for (const file of await readdir(localPath)) {
 
     // Remove dotfiles
-    if (file.substring(0,1) === '.') {
+    if (file.substring(0, 1) === '.') {
       continue;
     }
     if (!ctx.body._links.item) {
       ctx.body._links.item = [];
     }
     ctx.body._links.item.push({
-      href: path.join(ctx.path,file)
+      href: path.join(ctx.path, file)
     });
 
   }
 
-  if (ctx.path!=='/') {
+  if (ctx.path !== '/') {
 
     ctx.body._links.collection = { href: path.resolve(ctx.path, '..') };
 
@@ -90,7 +90,7 @@ async function getDirectory(ctx: Context, localPath: string) {
 async function getFile(ctx: Context, localPath: string) {
 
   ctx.body = await readFile(localPath);
-  switch(path.extname(localPath)) {
+  switch (path.extname(localPath)) {
 
     case '.css' :
       ctx.type = 'text/css';

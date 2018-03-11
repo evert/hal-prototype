@@ -39,7 +39,7 @@ function generateHtmlIndex(ctx: Context, body: Object) {
     <main>
       ${links}
 
-      <h2>Body</h2>    
+      <h2>Body</h2>
       <code class="hljs"><pre>${jsonBody}</pre></code>
 
     </main>
@@ -77,17 +77,17 @@ function generateLinks(body: any): string {
 
   let linkHtml = '';
 
-  for(const rel in body._links) {
+  for (const rel in body._links) {
 
-    const links = 
+    const links =
       Array.isArray(body._links[rel]) ?
       body._links[rel] :
       [body._links[rel]];
 
-    const linkCount = links.length; 
+    const linkCount = links.length;
     let first = true;
 
-    for(const link of links) {
+    for (const link of links) {
 
       linkHtml += `<tr>`;
       if (first) {
