@@ -1,0 +1,27 @@
+{
+  "name": "hal-prototype",
+  "version": "0.0.1",
+  "description": "Experiment for rapid prototyping HAL services",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evert/hal-prototype.git"
+  },
+  "keywords": [
+    "hal",
+    "rest",
+    "hateaos"
+  ],
+  "author": "me@evertpot.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/evert/hal-prototype/issues"
+  },
+  "homepage": "https://github.com/evert/hal-prototype#readme",
+  "dependencies": {
+    "koa": "^2.5.0"
+  }
+}
