@@ -2,9 +2,14 @@
   "name": "hal-prototype",
   "version": "0.0.1",
   "description": "Experiment for rapid prototyping HAL services",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run serve",
+    "serve": "node dist/server.js",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
+    "watch-ts" : "tsc -w",
+    "watch-node" : "nodemon dist/server.js",
+    "build" : "tsc"
   },
   "repository": {
     "type": "git",
@@ -22,6 +27,10 @@
   },
   "homepage": "https://github.com/evert/hal-prototype#readme",
   "dependencies": {
-    "koa": "^2.5.0"
+    "@types/koa": "^2.0.44",
+    "concurrently": "^3.5.1",
+    "koa": "^2.5.0",
+    "nodemon": "^1.17.1",
+    "typescript": "^2.7.2"
   }
 }
