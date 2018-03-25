@@ -48,8 +48,6 @@ function generateHtmlIndex(ctx: Context, body: Object) {
 </html>
 `;
 
-  console.log(ctx.body);
-
 }
 
 function h(input: string): string {
