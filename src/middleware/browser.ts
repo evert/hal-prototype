@@ -3,7 +3,8 @@ import highlight from 'highlight.js';
 
 const parsedContentTypes = [
   'application/json',
-  'application/json+hal'
+  'application/hal+json',
+  'application/problem+json',
 ];
 
 export default async function middleware(ctx: Context, next: Function) {

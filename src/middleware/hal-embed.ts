@@ -40,7 +40,7 @@ export default async function middleware(ctx: Context, next: Function) {
   if (!isArray) {
     links = [links];
   }
-  
+
   const promises = [];
   for (const link of links) {
     promises.push(embed(link));
@@ -52,10 +52,10 @@ export default async function middleware(ctx: Context, next: Function) {
 
   if (!ctx.response.body._embedded[rel]) {
     ctx.response.body._embedded[rel] =
-      result.length === 1 && !isArray ? result[0]: result;
+      result.length === 1 && !isArray ? result[0] : result;
   } else {
     // Something was already in there, we're gonna merge it.
-    ctx.response.body._embedded[rel] = 
+    ctx.response.body._embedded[rel] =
       ctx.response.body._embedded[rel].concat(result);
   }
 
