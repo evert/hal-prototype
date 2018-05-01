@@ -69,7 +69,7 @@ async function embed(link: Link) {
   }
 
   const response = await fetch(
-    url.resolve('http://localhost:3000/', link.href),
+    url.resolve('http://localhost:3080/', link.href),
     {
       headers: {
         Accept: supportedTypes.join(';')

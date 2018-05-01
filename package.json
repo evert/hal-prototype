@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/evert/hal-prototype#readme",
   "dependencies": {
+    "@types/node": "^9.6.7",
     "@types/node-fetch": "^1.6.9",
     "highlight.js": "^9.12.0",
     "koa": "^2.5.1",
