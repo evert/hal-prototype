@@ -26,7 +26,6 @@ export default class FileBackend extends AbstractBackend {
       ctx.path.substring(1)
 
     );
-    console.log(localPath, this.blobPath);
 
     if (!localPath.startsWith(this.blobPath)) {
       throw new BadRequest('Bad path');
