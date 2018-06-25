@@ -1,4 +1,4 @@
-import { Context } from 'koa';
+import { Context } from 'curveball';
 import { BadRequest, NotImplemented } from '../errors';
 import path from 'path';
 import util from 'util';
@@ -23,7 +23,7 @@ export default class FileBackend extends AbstractBackend {
     // Taking off the slash at the start.
     const localPath = path.join(
       this.blobPath,
-      ctx.path.substring(1)
+      ctx.request.path.substring(1)
 
     );
 
@@ -53,7 +53,7 @@ export default class FileBackend extends AbstractBackend {
 
     ctx.body = {
       _links: {
-        self: { href: ctx.path }
+        self: { href: ctx.request.path }
       }
 
     };
@@ -68,14 +68,14 @@ export default class FileBackend extends AbstractBackend {
         ctx.body._links.item = [];
       }
       ctx.body._links.item.push({
-        href: path.join(ctx.path, file)
+        href: path.join(ctx.request.path, file)
       });
 
     }
 
     if (ctx.path !== '/') {
 
-      ctx.body._links.collection = { href: path.resolve(ctx.path, '..') };
+      ctx.body._links.collection = { href: path.resolve(ctx.request.path, '..') };
 
     }
 

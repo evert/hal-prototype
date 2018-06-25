@@ -1,4 +1,4 @@
-import { Context } from 'koa';
+import { Context } from 'curveball';
 import fetch from 'node-fetch';
 import url from 'url';
 import { Http2ServerResponse } from 'http2';

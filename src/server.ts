@@ -1,5 +1,4 @@
-import Koa from 'koa';
-import { Context } from 'koa';
+import { Application, Context } from 'curveball';
 import http2 from 'http2';
 import fs from 'fs';
 
@@ -19,7 +18,7 @@ const options = {
   cert: fs.readFileSync(__dirname + '/../keys/localhost-cert.pem')
 };
 
-const app = new Koa();
+const app = new Application();
 
 app.use(cors);
 app.use(browser);

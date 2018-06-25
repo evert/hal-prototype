@@ -1,4 +1,4 @@
-import { Context } from 'koa';
+import { Context } from 'curveball';
 import highlight from 'highlight.js';
 
 const parsedContentTypes = [

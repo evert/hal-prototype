@@ -1,4 +1,4 @@
-import { Context } from 'koa';
+import { Context } from 'curveball';
 import { HttpError } from '../errors';
 
 export default async function middleware(ctx: Context, next: Function) {
@@ -20,7 +20,7 @@ export default async function middleware(ctx: Context, next: Function) {
 
 function emitError(ctx: Context, httpCode: number, error: Error) {
 
-  ctx.status = httpCode;
+  ctx.response.status = httpCode;
   ctx.response.type = 'application/problem+json';
   ctx.body = {
 
