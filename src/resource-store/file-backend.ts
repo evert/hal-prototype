@@ -51,7 +51,7 @@ export default class FileBackend extends AbstractBackend {
 
   async getDirectory(ctx: Context, localPath: string) {
 
-    ctx.body = {
+    ctx.response.body = {
       _links: {
         self: { href: ctx.request.path }
       }
@@ -64,18 +64,18 @@ export default class FileBackend extends AbstractBackend {
       if (file.substring(0, 1) === '.') {
         continue;
       }
-      if (!ctx.body._links.item) {
-        ctx.body._links.item = [];
+      if (!ctx.response.body._links.item) {
+        ctx.response.body._links.item = [];
       }
-      ctx.body._links.item.push({
+      ctx.response.body._links.item.push({
         href: path.join(ctx.request.path, file)
       });
 
     }
 
-    if (ctx.path !== '/') {
+    if (ctx.request.path !== '/') {
 
-      ctx.body._links.collection = { href: path.resolve(ctx.request.path, '..') };
+      ctx.response.body._links.collection = { href: path.resolve(ctx.request.path, '..') };
 
     }
 
@@ -83,11 +83,11 @@ export default class FileBackend extends AbstractBackend {
 
   async getFile(ctx: Context, localPath: string) {
 
-    ctx.body = await readFile(localPath);
+    ctx.response.body = await readFile(localPath);
     switch (path.extname(localPath)) {
 
       case '.css' :
-        ctx.type = 'text/css';
+        ctx.response.headers.set('Content-Type', 'text/css');
         break;
 
     }

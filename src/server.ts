@@ -29,7 +29,7 @@ app.use(halPush);
 const fileBackend = new FileBackend(__dirname + '/../blobs');
 app.use(resourceStore(fileBackend));
 
-const http2Server = http2.createSecureServer(options, app.callback()).listen(httpsPort);
+const http2Server = http2.createSecureServer(options, app.callback.bind(app)).listen(httpsPort);
 app.listen(port);
 
 http2Server.on('goaway', () => {

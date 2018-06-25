@@ -20,7 +20,7 @@ export default async function middleware(ctx: Context, next: Function) {
 
   // If there was no push query variable, or no push support, skip.
   // @ts-ignore Koa.res is not Http2ServerResponse, but it should.
-  if (!(<Http2ServerResponse>ctx.res).stream || !ctx.query.push) {
+  if (!(<Http2ServerResponse>ctx.res).stream || !ctx.request.query.push) {
     return next();
   }
 
@@ -32,16 +32,16 @@ export default async function middleware(ctx: Context, next: Function) {
 
   await next();
 
-  if (!ctx.response.is(supportedTypes)) {
+  if (!supportedTypes.includes(ctx.response.type)) {
     return;
   }
 
   // Lets see if there's a link with this name.
-  if (!ctx.response.body || !ctx.response.body._links || !ctx.response.body._links[ctx.query.push]) {
+  if (!ctx.response.body || !ctx.response.body._links || !ctx.response.body._links[ctx.request.query.push]) {
     return;
   }
 
-  const rel = ctx.query.push;
+  const rel = ctx.request.query.push;
 
   let links = ctx.response.body._links[rel];
 

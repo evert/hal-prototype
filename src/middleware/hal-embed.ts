@@ -17,22 +17,22 @@ const supportedTypes = [
  */
 export default async function middleware(ctx: Context, next: Function) {
 
-  if (!ctx.query.embed) {
+  if (!ctx.request.query.embed) {
     return next();
   }
 
   await next();
 
-  if (!ctx.response.is(supportedTypes)) {
+  if (!supportedTypes.includes(ctx.response.type)) {
     return;
   }
 
   // Lets see if there's a link with this name.
-  if (!ctx.response.body || !ctx.response.body._links || !ctx.response.body._links[ctx.query.embed]) {
+  if (!ctx.response.body || !ctx.response.body._links || !ctx.response.body._links[ctx.request.query.embed]) {
     return;
   }
 
-  const rel = ctx.query.embed;
+  const rel = ctx.request.query.embed;
 
   let links = ctx.response.body._links[rel];
 

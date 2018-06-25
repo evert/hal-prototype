@@ -21,8 +21,8 @@ export default async function middleware(ctx: Context, next: Function) {
 function emitError(ctx: Context, httpCode: number, error: Error) {
 
   ctx.response.status = httpCode;
-  ctx.response.type = 'application/problem+json';
-  ctx.body = {
+  ctx.response.headers.set('Content-Type', 'application/problem+json');
+  ctx.response.body = {
 
     type: 'https://evertpot.com/errors/' + httpCode,
     title: error.message,

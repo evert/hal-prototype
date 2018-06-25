@@ -10,7 +10,7 @@ const parsedContentTypes = [
 export default async function middleware(ctx: Context, next: Function) {
 
   // Check to see if the client even wants html.
-  if (!ctx.accepts('text/html')) {
+  if (!ctx.request.accepts('text/html')) {
     return next();
   }
 
@@ -18,7 +18,7 @@ export default async function middleware(ctx: Context, next: Function) {
   await next();
 
   // We only care about transforming a few content-types
-  if (!ctx.response.is(parsedContentTypes)) {
+  if (parsedContentTypes.includes(ctx.response.type)) {
     return;
   }
 
@@ -26,9 +26,9 @@ export default async function middleware(ctx: Context, next: Function) {
   // returned.
   //
   // This is useful if the client submitted a lower q= score for text/html
-  if (ctx.accepts('text/html', ...parsedContentTypes) === 'text/html') {
-    ctx.type = 'text/html';
-    generateHtmlIndex(ctx, ctx.body);
+  if (ctx.request.accepts('text/html', ...parsedContentTypes) === 'text/html') {
+    ctx.response.headers.set('Content-Type', 'text/html');
+    generateHtmlIndex(ctx, ctx.response.body);
   }
 
 }
@@ -38,7 +38,7 @@ function generateHtmlIndex(ctx: Context, body: Object) {
   const jsonBody = syntaxHighlightJson(body);
   const links = generateLinks(body);
 
-  ctx.body = `
+  ctx.response.body = `
 <!DOCTYPE html>
 <html>
   <head>
