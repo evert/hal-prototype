@@ -1,4 +1,4 @@
-import { Context } from 'koa';
+import { Context } from 'curveball';
 import { BadRequest, NotImplemented } from '../errors';
 import path from 'path';
 import util from 'util';
@@ -23,7 +23,7 @@ export default class FileBackend extends AbstractBackend {
     // Taking off the slash at the start.
     const localPath = path.join(
       this.blobPath,
-      ctx.path.substring(1)
+      ctx.request.path.substring(1)
 
     );
 
@@ -51,12 +51,13 @@ export default class FileBackend extends AbstractBackend {
 
   async getDirectory(ctx: Context, localPath: string) {
 
-    ctx.body = {
+    ctx.response.body = {
       _links: {
-        self: { href: ctx.path }
+        self: { href: ctx.request.path }
       }
 
     };
+    ctx.response.headers.set('Content-Type', 'application/hal+json');
 
     for (const file of await readdir(localPath)) {
 
@@ -64,18 +65,18 @@ export default class FileBackend extends AbstractBackend {
       if (file.substring(0, 1) === '.') {
         continue;
       }
-      if (!ctx.body._links.item) {
-        ctx.body._links.item = [];
+      if (!ctx.response.body._links.item) {
+        ctx.response.body._links.item = [];
       }
-      ctx.body._links.item.push({
-        href: path.join(ctx.path, file)
+      ctx.response.body._links.item.push({
+        href: path.join(ctx.request.path, file)
       });
 
     }
 
-    if (ctx.path !== '/') {
+    if (ctx.request.path !== '/') {
 
-      ctx.body._links.collection = { href: path.resolve(ctx.path, '..') };
+      ctx.response.body._links.collection = { href: path.resolve(ctx.request.path, '..') };
 
     }
 
@@ -83,11 +84,11 @@ export default class FileBackend extends AbstractBackend {
 
   async getFile(ctx: Context, localPath: string) {
 
-    ctx.body = await readFile(localPath);
+    ctx.response.body = await readFile(localPath);
     switch (path.extname(localPath)) {
 
       case '.css' :
-        ctx.type = 'text/css';
+        ctx.response.headers.set('Content-Type', 'text/css');
         break;
 
     }

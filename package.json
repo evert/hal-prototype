@@ -28,16 +28,15 @@
   },
   "homepage": "https://github.com/evert/hal-prototype#readme",
   "dependencies": {
-    "@types/node": "^9.6.7",
-    "@types/node-fetch": "^1.6.9",
+    "curveball": "^0.3.1",
     "highlight.js": "^9.12.0",
-    "koa": "^2.5.1",
     "node-fetch": "^2.1.2",
-    "npm": "^6.0.0"
+    "npm": "^6.1.0"
   },
   "devDependencies": {
+    "@types/node": "^9.6.7",
+    "@types/node-fetch": "^1.6.9",
     "@types/highlight.js": "^9.12.2",
-    "@types/koa": "^2.0.45",
     "concurrently": "^3.5.1",
     "nodemon": "^1.17.3",
     "tslint": "^5.9.1",
