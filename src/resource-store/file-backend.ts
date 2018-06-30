@@ -57,6 +57,7 @@ export default class FileBackend extends AbstractBackend {
       }
 
     };
+    ctx.response.headers.set('Content-Type', 'application/hal+json');
 
     for (const file of await readdir(localPath)) {
 

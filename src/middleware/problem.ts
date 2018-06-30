@@ -30,4 +30,6 @@ function emitError(ctx: Context, httpCode: number, error: Error) {
 
   };
 
+  console.error(error);
+
 }

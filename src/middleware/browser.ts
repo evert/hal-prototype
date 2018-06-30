@@ -18,7 +18,7 @@ export default async function middleware(ctx: Context, next: Function) {
   await next();
 
   // We only care about transforming a few content-types
-  if (parsedContentTypes.includes(ctx.response.type)) {
+  if (!parsedContentTypes.includes(ctx.response.type)) {
     return;
   }
 
