@@ -113,13 +113,13 @@ async function push(link: Link, ctx: Context) {
       ];
 
       // @ts-ignore node-fetch package is out of date
-      for(const key of response.headers.keys()) {
+      for (const key of response.headers.keys()) {
         if (forbiddenHeaders.includes(key)) {
           continue;
         }
 
         res.setHeader(key, response.headers.get(key));
-      };
+      }
       // @ts-ignore Koa.res is not Http2ServerResponse, but it should.
       if (!(<HttpServerResponse>ctx.res).stream.pushAllowed) {
         console.log('Client has push disabled');
