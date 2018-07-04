@@ -30,7 +30,12 @@ const fileBackend = new FileBackend(__dirname + '/../blobs');
 app.use(resourceStore(fileBackend));
 
 const http2Server = http2.createSecureServer(options, app.callback()).listen(httpsPort);
+
+console.log('Listening on port ' + httpsPort);
+
 app.listen(port);
+
+console.log('Listening on port ' + port);
 
 http2Server.on('goaway', () => {
   console.log('goaway');

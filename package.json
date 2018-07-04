@@ -1,6 +1,6 @@
 {
   "name": "hal-prototype",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Experiment for rapid prototyping HAL services",
   "main": "dist/server.js",
   "scripts": {
