@@ -1,4 +1,4 @@
-import { Application, Context } from 'curveball';
+import { Application, Context } from '@curveball/core';
 import http2 from 'http2';
 import fs from 'fs';
 
@@ -24,7 +24,25 @@ app.use(cors);
 app.use(browser);
 app.use(problem);
 app.use(halEmbed);
-// app.use(halPush);
+app.use(halPush(app));
+
+app.use( (ctx, next) => {
+
+  if (ctx.request.path !== '/300') {
+    return next();
+  }
+
+  ctx.response.status = 300;
+  ctx.response.headers.append('Link', [
+    '</foo> rel="alternate"',
+    '</bar> rel="alternate"',
+  ]);
+  ctx.response.headers.set('Content-Type', 'text/html');
+  ctx.response.headers.set('Location', 'http://localhost:3080/');
+  ctx.response.body = '<h3>Multiple choices</h3>';
+  ctx.response.body = '';
+
+});
 
 const fileBackend = new FileBackend(__dirname + '/../blobs');
 app.use(resourceStore(fileBackend));
@@ -36,23 +54,3 @@ console.log('Listening on port ' + httpsPort);
 app.listen(port);
 
 console.log('Listening on port ' + port);
-
-http2Server.on('goaway', () => {
-  console.log('goaway');
-});
-http2Server.on('stream', stream => {
-  stream.on('goaway', () => {
-    console.log('stream goaway');
-  });
-  stream.on('error', (err) => {
-    console.log('stream error', err);
-  });
-});
-http2Server.on('request', request => {
-  request.on('goaway', () => {
-    console.log('request goaway');
-  });
-  request.on('error', (err) => {
-    console.log('request error', err);
-  });
-});

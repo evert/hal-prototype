@@ -1,4 +1,4 @@
-import { Context } from 'curveball';
+import { Middleware, Application, Context } from '@curveball/core';
 import fetch from 'node-fetch';
 import url from 'url';
 import { Http2ServerResponse } from 'http2';
@@ -13,51 +13,49 @@ const supportedTypes = [
 ];
 
 /**
- * This middleware listens for `embed=` query arguments and automatically
- * turns links matching this into an embedded HAL resource.
+ * This middleware listens for `push=` query arguments and automatically
+ * does HTTP/2 pushes for those relationships.
  */
-export default async function middleware(ctx: Context, next: Function) {
+export default function mw(app: Application): Middleware {
 
-  // If there was no push query variable, or no push support, skip.
-  // @ts-ignore Koa.res is not Http2ServerResponse, but it should.
-  if (!(<Http2ServerResponse>ctx.res).stream || !ctx.request.query.push) {
-    return next();
-  }
+  return async(ctx, next) => {
 
-  // @ts-ignore Koa.res is not Http2ServerResponse, but it should.
-  if (!(<HttpServerResponse>ctx.res).stream.pushAllowed) {
-    console.log('Client has push disabled');
-    return next();
-  }
+    await next();
 
-  await next();
+    // Do we support the content-type for push?
+    if (!supportedTypes.includes(ctx.response.type)) {
+      return;
+    }
 
-  if (!supportedTypes.includes(ctx.response.type)) {
-    return;
-  }
+    // Did the client want a push?
+    if (!ctx.request.query.push) {
+      return;
+    }
 
-  // Lets see if there's a link with this name.
-  if (!ctx.response.body || !ctx.response.body._links || !ctx.response.body._links[ctx.request.query.push]) {
-    return;
-  }
+    // Lets see if there's a link with this name.
+    if (!ctx.response.body || !ctx.response.body._links || !ctx.response.body._links[ctx.request.query.push]) {
+      return;
+    }
 
-  const rel = ctx.request.query.push;
+    const rel = ctx.request.query.push;
 
-  let links = ctx.response.body._links[rel];
+    let links = ctx.response.body._links[rel];
 
-  const isArray = Array.isArray(links);
-  if (!isArray) {
-    links = [links];
-  }
+    const isArray = Array.isArray(links);
+    if (!isArray) {
+      links = [links];
+    }
 
-  const promises = [];
-  for (const link of links) {
-    await push(link, ctx);
+    const promises = [];
+    for (const link of links) {
+      await push(link, ctx, app);
+    }
+
   }
 
 }
 
-async function push(link: Link, ctx: Context) {
+async function push(link: Link, ctx: Context, app: Application) {
 
   console.log('Maybe pushing', link.href);
 
@@ -67,72 +65,20 @@ async function push(link: Link, ctx: Context) {
     return;
   }
 
-  const response = await fetch(
-    url.resolve('http://localhost:3080/', link.href),
-    {
-      headers: {
+  await ctx.response.push( async pushCtx => {
+
+    console.log('Doing a subrequest to ', link.href);
+
+    pushCtx.request.path = link.href;
+    pushCtx.response = await app.subRequest(
+      'GET',
+      link.href,
+      {
         Accept: supportedTypes.join(';')
       }
-    }
-  );
+    );
+    console.log('Pushing', link.href);
 
-  console.log('Pushing', link.href);
-
-  // @ts-ignore Koa.res is not Http2ServerResponse, but it should.
-  (<HttpServerResponse>ctx.res).stream.on('error', err => {
-    console.log(err);
   });
-
-  // @ts-ignore Koa.res is not Http2ServerResponse, but it should.
-  if (!(<HttpServerResponse>ctx.res).stream.pushAllowed) {
-    console.log('Client has push disabled');
-    return;
-  }
-
-  // @ts-ignore Koa.res is not Http2ServerResponse, but it should.
-  (<Http2ServerResponse>ctx.res).createPushResponse(
-    {
-      ':path': link.href,
-      ':status': response.status
-    },
-    async (err, res) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-
-      res.stream.on('error', err => {
-        console.log('push stream error', err);
-      });
-
-
-      res.statusCode = response.status;
-
-      const forbiddenHeaders = [
-        'connection'
-      ];
-
-      // @ts-ignore node-fetch package is out of date
-      for (const key of response.headers.keys()) {
-        if (forbiddenHeaders.includes(key)) {
-          continue;
-        }
-
-        res.setHeader(key, response.headers.get(key));
-      }
-      // @ts-ignore Koa.res is not Http2ServerResponse, but it should.
-      if (!(<HttpServerResponse>ctx.res).stream.pushAllowed) {
-        console.log('Client has push disabled');
-        return;
-      }
-      res.end(await response.buffer());
-    }
-  );
-
-  /*
-  const json = await response.json();
-
-  return json;
-   */
 
 }

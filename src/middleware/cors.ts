@@ -1,4 +1,4 @@
-import { Context } from 'curveball';
+import { Context } from '@curveball/core';
 
 const allowedHeaders = [
   'Content-Type',

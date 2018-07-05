@@ -1,4 +1,4 @@
-import { Context } from 'curveball';
+import { Context } from '@curveball/core';
 import { HttpError } from '../errors';
 
 export default async function middleware(ctx: Context, next: Function) {

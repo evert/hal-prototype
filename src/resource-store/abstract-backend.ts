@@ -1,4 +1,4 @@
-import { Context } from 'curveball';
+import { Context } from '@curveball/core';
 import { MethodNotAllowed } from '../errors';
 
 export default class AbstractBackend {
