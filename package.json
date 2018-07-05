@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/evert/hal-prototype#readme",
   "dependencies": {
-    "curveball": "^0.3.1",
+    "@curveball/core": "^0.4.2",
     "highlight.js": "^9.12.0",
     "node-fetch": "^2.1.2",
     "npm": "^6.1.0"

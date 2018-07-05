@@ -1,4 +1,4 @@
-import { Context } from 'curveball';
+import { Context } from '@curveball/core';
 import { BadRequest, NotImplemented } from '../errors';
 import path from 'path';
 import util from 'util';

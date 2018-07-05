@@ -1,4 +1,4 @@
-import { Context } from 'curveball';
+import { Context } from '@curveball/core';
 import fetch from 'node-fetch';
 import url from 'url';
 

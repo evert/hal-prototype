@@ -1,4 +1,4 @@
-import { Context } from 'curveball';
+import { Context } from '@curveball/core';
 import highlight from 'highlight.js';
 
 const parsedContentTypes = [
