@@ -5,7 +5,7 @@ import fs from 'fs';
 import cors from './middleware/cors';
 import FileBackend from './resource-store/file-backend';
 import resourceStore from './resource-store/middleware';
-import browser from './middleware/browser';
+import browser from 'hal-browser';
 import halEmbed from './middleware/hal-embed';
 import halPush from './middleware/hal-push';
 import problem from './middleware/problem';
@@ -21,7 +21,12 @@ const options = {
 const app = new Application();
 
 app.use(cors);
-app.use(browser);
+app.use(browser({
+  stylesheets: [
+    '/css/main.css',
+    '/css/solarized-dark.css'
+  ]
+}));
 app.use(problem);
 app.use(halEmbed);
 app.use(halPush(app));

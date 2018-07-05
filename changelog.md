@@ -1,3 +1,9 @@
+0.2.0 (2018-07-04)
+==================
+
+* HAL browser is now its own [project](https://github.com/evert/hal-browser).
+
+
 0.1.1 (2018-07-04)
 ==================
 
