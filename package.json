@@ -6,7 +6,6 @@
   "scripts": {
     "start": "npm run serve",
     "serve": "node dist/server.js",
-    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
     "watch-ts": "tsc -w",
     "watch-node": "nodemon -w dist",
     "build": "tsc",
@@ -29,7 +28,8 @@
   "homepage": "https://github.com/evert/hal-prototype#readme",
   "dependencies": {
     "@curveball/core": "^0.4.2",
-    "hal-browser": "0.0.2",
+    "@curveball/router": "0.0.1",
+    "hal-browser": "^0.3.0",
     "highlight.js": "^9.12.0",
     "node-fetch": "^2.1.2",
     "npm": "^6.1.0"

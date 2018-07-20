@@ -78,7 +78,12 @@ async function embed(link: Link) {
   );
 
   // Is this a response we can embed?
-  const contentType = response.headers.get('content-type').split(';')[0];
+  let contentType = response.headers.get('content-type');
+  if (!contentType) {
+    return;
+  }
+
+  contentType = contentType.split(';')[0];
   if (!supportedTypes.includes(contentType)) {
     return;
   }

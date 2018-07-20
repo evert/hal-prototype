@@ -87,6 +87,9 @@ export default class FileBackend extends AbstractBackend {
     ctx.response.body = await readFile(localPath);
     switch (path.extname(localPath)) {
 
+      case '.csv' :
+        ctx.response.headers.set('Content-Type', 'text/csv');
+        break;
       case '.css' :
         ctx.response.headers.set('Content-Type', 'text/css');
         break;

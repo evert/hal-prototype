@@ -9,6 +9,7 @@ import browser from 'hal-browser';
 import halEmbed from './middleware/hal-embed';
 import halPush from './middleware/hal-push';
 import problem from './middleware/problem';
+import routes from './routes';
 
 const port = 3080;
 const httpsPort = 3443;
@@ -20,34 +21,17 @@ const options = {
 
 const app = new Application();
 
+app.use( (ctx, next) => {
+  console.log(ctx.request.method + ' ' + ctx.request.path);
+  return next();
+});
 app.use(cors);
-app.use(browser({
-  stylesheets: [
-    '/css/main.css',
-    '/css/solarized-dark.css'
-  ]
-}));
+app.use(browser());
 app.use(problem);
 app.use(halEmbed);
 app.use(halPush(app));
 
-app.use( (ctx, next) => {
-
-  if (ctx.request.path !== '/300') {
-    return next();
-  }
-
-  ctx.response.status = 300;
-  ctx.response.headers.append('Link', [
-    '</foo> rel="alternate"',
-    '</bar> rel="alternate"',
-  ]);
-  ctx.response.headers.set('Content-Type', 'text/html');
-  ctx.response.headers.set('Location', 'http://localhost:3080/');
-  ctx.response.body = '<h3>Multiple choices</h3>';
-  ctx.response.body = '';
-
-});
+routes.forEach( route => app.use(route));
 
 const fileBackend = new FileBackend(__dirname + '/../blobs');
 app.use(resourceStore(fileBackend));
