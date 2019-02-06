@@ -19,6 +19,8 @@ export default async (ctx: Context, next: Function) => {
       alternate: [
         { href: '/testing/markdown', type: 'text/markdown', title: 'Markdown test' },
         { href: '/testing/csv', type: 'text/csv', title: 'Csv test' },
+        { href: '/testing/rss', type: 'application/rss+xml', title: 'RSS' },
+        { href: '/testing/rss', type: 'application/atom+xml', title: 'Atom' },
       ],
       'code-repository': { href: 'https://github.com/evert/hal-browser' },
       'redirect-test': { href: '/redirect-test' }

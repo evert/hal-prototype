@@ -27,20 +27,20 @@
   },
   "homepage": "https://github.com/evert/hal-prototype#readme",
   "dependencies": {
-    "@curveball/core": "^0.4.2",
-    "@curveball/router": "0.0.1",
-    "hal-browser": "^0.3.0",
-    "highlight.js": "^9.12.0",
-    "node-fetch": "^2.1.2",
-    "npm": "^6.1.0"
+    "@curveball/core": "^0.8.1",
+    "@curveball/router": "^0.2.0",
+    "hal-browser": "^0.6.3",
+    "highlight.js": "^9.14.2",
+    "node-fetch": "^2.3.0",
+    "npm": "^6.7.0"
   },
   "devDependencies": {
-    "@types/node": "^9.6.7",
-    "@types/node-fetch": "^1.6.9",
-    "@types/highlight.js": "^9.12.2",
-    "concurrently": "^3.5.1",
-    "nodemon": "^1.17.3",
-    "tslint": "^5.9.1",
-    "typescript": "^2.8.3"
+    "@types/highlight.js": "^9.12.3",
+    "@types/node": "^10.12.21",
+    "@types/node-fetch": "^2.1.4",
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.9",
+    "tslint": "^5.12.1",
+    "typescript": "^3.3.1"
   }
 }
